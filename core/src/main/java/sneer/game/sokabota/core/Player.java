@@ -1,5 +1,6 @@
 package sneer.game.sokabota.core;
 
+import sneer.gameengine.grid.Square;
 import sneer.gameengine.grid.Thing;
 
 public class Player extends Thing {
@@ -18,5 +19,9 @@ public class Player extends Thing {
 	@Override
 	public String toString() {
 		return "" + number;
+	}
+
+	public void tap(Square square) {
+		square.accept(this);
 	}
 }
