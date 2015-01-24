@@ -1,6 +1,7 @@
 package sneer.game.sokabota.core.test;
 
 import static sneer.game.sokabota.core.Player.P1;
+import static sneer.game.sokabota.core.Player.P2;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,6 +38,26 @@ public class SokabotaTest extends Assert {
 		scene(  "1   ",
 				">  +");
 		
+	}
+
+	@Test
+	public void victory() {
+		subject = new Sokabota(
+				"1  !",
+				"   2");
+
+		assertFalse(subject.isVictorious());
+		
+		tap(P1,	"1  *",
+				"   2");
+		
+		tap(P2,	"   *",
+				"   2");
+		
+		scene(  "   !",
+				"    ");
+		
+		assertTrue(subject.isVictorious());
 	}
 
 	

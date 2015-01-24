@@ -12,6 +12,7 @@ public class Player extends Thing {
 
 	private final int number;
 	private boolean isDead = false;
+	private boolean isVictorious = false;
 	
 	private Player(int number) {
 		this.number = number;
@@ -30,7 +31,19 @@ public class Player extends Thing {
 			square.accept(this);
 	}
 
+	@Override
+	protected void collideWith(Thing other) {
+		if (other instanceof ExitDoor) {
+			isVictorious = true;
+			disappear();
+		}
+	}
+	
 	void die() {
 		isDead = true;
+	}
+
+	boolean isVictorious() {
+		return isVictorious;
 	}
 }
