@@ -13,7 +13,9 @@ public class Player extends Thing {
 	public Player(int number) {
 		this.number = number;
 	}
-	
+
+    public int number() { return number; }
+
 	@Override
 	public String toString() {
 		return isDead ? "+" : "" + number;
