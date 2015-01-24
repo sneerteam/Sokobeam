@@ -62,23 +62,28 @@ public class SokabotaTest extends Assert {
 
 	
 	
-	private void tap(Player player, String... scene) {
-		int tapLine = -1;
-		String lineWithTap = null;
-		for (int line = 0; line < scene.length; line++) {
-			if (scene[line].contains("*")) {
-				lineWithTap = scene[line];
-				tapLine = line;
-				break;
-			}
-		}
-		int tapCol = lineWithTap.indexOf('*');
+	private void tap(Player player, String... expected) {
+		int tapLine = findTapLine(expected);
+		int tapCol  = expected[tapLine].indexOf('*');
 
-		scene[tapLine] = scene[tapLine].replace('*', subject.sceneAsText()[tapLine].charAt(tapCol));
-		
-		scene(scene);
+		expected[tapLine] = replaceTapWithActualThing(tapLine, tapCol, expected);
+		scene(expected);
 		
 		subject.tap(player, tapLine, tapCol);
+	}
+
+	
+	private int findTapLine(String... expected) {
+		for (int line = 0; line < expected.length; line++)
+			if (expected[line].contains("*"))
+				return line;
+		
+		throw new IllegalStateException();
+	}
+
+	
+	private String replaceTapWithActualThing(int tapLine, int tapCol, String... scene) {
+		return scene[tapLine].replace('*', subject.sceneAsText()[tapLine].charAt(tapCol));
 	}
 
 	
