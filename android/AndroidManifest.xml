@@ -20,6 +20,23 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- <meta-data android:name="sneer:plugin-type" android:value="PARTNER_SESSION" /> -->
+            <!-- <meta-data android:name="sneer:tuple-type" android:value="rock-paper-scissors/move" /> -->
+            <!-- <meta-data android:name="sneer:menu-caption" android:value="Play Rock Paper Scissors" /> -->
+            <!-- <meta-data android:name="sneer:menu-icon" android:resource="@drawable/ic_launcher" /> -->
+            <meta-data
+                android:name="sneer:plugin-type"
+                android:value="PARTNER_SESSION" />
+            <meta-data
+                android:name="sneer:tuple-type"
+                android:value="sokabota/move" />
+            <meta-data
+                android:name="sneer:menu-caption"
+                android:value="Play Sokabota" />
+            <meta-data
+                android:name="sneer:menu-icon"
+                android:resource="@drawable/ic_launcher" />
         </activity>
     </application>
 
