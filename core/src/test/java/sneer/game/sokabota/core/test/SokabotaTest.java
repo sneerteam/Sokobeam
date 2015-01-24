@@ -16,6 +16,18 @@ public class SokabotaTest extends Assert {
 	@Test
 	public void simpleMovement() {
 		subject = new Sokabota(
+				"W1 ");
+		
+		tap(P1, "*1 ");
+
+		tap(P1, "W1*");
+		
+		scene(  "W 1");
+	}
+	
+	@Test
+	public void movementTo() {
+		subject = new Sokabota(
 				" 1 ");
 		
 		tap(P1, " 1*");
@@ -43,19 +55,19 @@ public class SokabotaTest extends Assert {
 	@Test
 	public void victory() {
 		subject = new Sokabota(
-				"1  !",
-				"   2");
+				"1!",
+				" 2");
 
 		assertFalse(subject.isVictorious());
 		
-		tap(P1,	"1  *",
-				"   2");
+		tap(P1,	"1*",
+				" 2");
 		
-		tap(P2,	"   *",
-				"   2");
+		tap(P2,	" *",
+				" 2");
 		
-		scene(  "   !",
-				"    ");
+		scene(  " !",
+				"  ");
 		
 		assertTrue(subject.isVictorious());
 	}
