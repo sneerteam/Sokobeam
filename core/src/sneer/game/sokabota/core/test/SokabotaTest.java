@@ -14,11 +14,10 @@ public class SokabotaTest extends Assert {
 	
 	@Test
 	public void simpleMovement() {
-		Sokabota.initialScene = new String[] {
+		subject = new Sokabota(
 				"WWWWW",
 				"W 1 W",
-				"WWWWW"};
-		subject = new Sokabota();
+				"WWWWW");
 		subject.move(P1, RIGHT);
 		assertArrayEquals(new String[]{
 				"WWWWW",

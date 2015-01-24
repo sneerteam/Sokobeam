@@ -10,11 +10,6 @@ public abstract class Game extends Utils {
 	public Square[][] scene;
 
 	
-	public Game() {
-		start();
-	}
-
-
 	public void setScene(String... lines) {
 		int lineCount = lines.length;
 		int columnCount = lines[0].length();
@@ -64,9 +59,6 @@ public abstract class Game extends Utils {
 	}
 
 
-	public abstract void start();
-	
-	
 	public abstract Thing thingRepresentedBy(String character);
 
 

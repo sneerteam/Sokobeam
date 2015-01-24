@@ -8,16 +8,13 @@ import sneer.gameengine.grid.Thing;
 
 public class Sokabota extends Game {
 
-	static public String[] initialScene;
+	public Sokabota(String... scene) {
+		setScene(scene);
+	}
 
 	public void move(Player player, Direction d) {
 		player.direction = d;
 		player.step();
-	}
-
-	@Override
-	public void start() {
-		setScene(initialScene);
 	}
 
 	@Override
