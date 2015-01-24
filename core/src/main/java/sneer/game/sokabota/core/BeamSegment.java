@@ -1,14 +1,18 @@
 package sneer.game.sokabota.core;
 
+import java.util.Set;
+
 import sneer.gameengine.grid.Direction;
 import sneer.gameengine.grid.Square;
 import sneer.gameengine.grid.Thing;
 
-public class Beam extends Thing {
+public class BeamSegment extends Thing {
 
-	Beam(Square square, Direction dir) {
-		if (square != null && square.accept(this))
-			new Beam(square.neighbor(dir), dir);
+	BeamSegment(Square square, Direction dir, Set<BeamSegment> beam) {
+		if (square != null && square.accept(this)) {
+			beam.add(this);
+			new BeamSegment(square.neighbor(dir), dir, beam);
+		}
 	}
 	
 	@Override

@@ -31,8 +31,12 @@ public class SokabotaTest extends Assert {
 		tap(P1,	"1   ",
 				"*  2");
 		
+		tap(P1,	"1   ",
+				"*--+");
+		
 		scene(  "1   ",
-				">--+");
+				">  +");
+		
 	}
 
 	
