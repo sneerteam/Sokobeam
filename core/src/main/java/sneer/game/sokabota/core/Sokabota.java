@@ -24,6 +24,7 @@ public class Sokabota extends Game {
 	public Thing thingRepresentedBy(String character) {
 		if (character.equals("!")) return new ExitDoor();
 		if (character.equals("W")) return new Wall();
+		if (character.equals("b")) return new Box();
 
 		if (character.equals("1")) return addPlayer(1);
 		if (character.equals("2")) return addPlayer(2);

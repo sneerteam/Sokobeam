@@ -22,13 +22,23 @@ public class SokabotaTest extends Assert {
 	}
 	
 	@Test
-	public void farMovement() {
+	public void movementAttemptToDistantObjectFails() {
 		subject = new Sokabota(
 				"1  >");
 		
 		tap(1,  "1  *");
 
 		scene(  "1  >");
+	}
+	
+	@Test
+	public void pushingBoxes() {
+		subject = new Sokabota(
+				"1b ");
+		
+		tap(1,  "1* ");
+
+		scene(  " 1b");
 	}
 	
 	@Test
