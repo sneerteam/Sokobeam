@@ -3,7 +3,6 @@ package sneer.game.sokabota.core.test;
 import static sneer.game.sokabota.core.Player.P1;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.game.sokabota.core.Player;
@@ -23,7 +22,6 @@ public class SokabotaTest extends Assert {
 		scene(  "  1");
 	}
 	
-	@Ignore
 	@Test
 	public void deathByLaser() {
 		subject = new Sokabota(

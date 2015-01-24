@@ -11,6 +11,7 @@ public class Player extends Thing {
 	public static final Player P4 = new Player(4);
 
 	private final int number;
+	private boolean isDead = false;
 	
 	private Player(int number) {
 		this.number = number;
@@ -18,10 +19,18 @@ public class Player extends Thing {
 	
 	@Override
 	public String toString() {
-		return "" + number;
+		return isDead ? "+" : "" + number;
 	}
 
 	public void tap(Square square) {
-		square.accept(this);
+		Thing target = square.thing;
+		if (target != null && target instanceof Gun)
+			((Gun)target).toggle();
+		else
+			square.accept(this);
+	}
+
+	void die() {
+		isDead = true;
 	}
 }

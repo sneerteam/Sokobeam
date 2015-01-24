@@ -5,6 +5,8 @@ import sneer.gameengine.grid.Thing;
 
 public class Gun extends Thing {
 
+	private boolean isOn = false;
+
 	Gun(Direction dir) {
 		direction = dir;
 	}
@@ -12,6 +14,12 @@ public class Gun extends Thing {
 	@Override
 	public String toString() {
 		return ">";
+	}
+
+	public void toggle() {
+		isOn = !isOn;
+		if (isOn)
+			new Beam(square.neighbor(direction), direction);
 	}
 
 }
