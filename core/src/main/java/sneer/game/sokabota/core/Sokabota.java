@@ -1,7 +1,6 @@
 package sneer.game.sokabota.core;
 
 import static sneer.game.sokabota.core.Player.P1;
-import sneer.gameengine.grid.Direction;
 import sneer.gameengine.grid.Game;
 import sneer.gameengine.grid.Thing;
 
@@ -12,11 +11,6 @@ public class Sokabota extends Game {
 		setScene(scene);
 	}
 
-	public void move(Player player, Direction d) {
-		player.direction = d;
-		player.step();
-	}
-
 	@Override
 	public Thing thingRepresentedBy(String character) {
 		if (character.equals("W")) return new Wall();
@@ -24,6 +18,11 @@ public class Sokabota extends Game {
 		throw new IllegalStateException("Unknown character: " + character);
 	}
 
+	public void tap(Player player, int line, int col) {
+		scene[line][col].accept(player);
+	}
+
+	
 	
 
 }
