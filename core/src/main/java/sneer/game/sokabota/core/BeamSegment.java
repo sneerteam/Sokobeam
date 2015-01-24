@@ -1,5 +1,10 @@
 package sneer.game.sokabota.core;
 
+import static sneer.gameengine.grid.Direction.UP;
+import static sneer.gameengine.grid.Direction.DOWN;
+import static sneer.gameengine.grid.Direction.LEFT;
+import static sneer.gameengine.grid.Direction.RIGHT;
+
 import java.util.Set;
 
 import sneer.gameengine.grid.Direction;
@@ -8,10 +13,17 @@ import sneer.gameengine.grid.Thing;
 
 public class BeamSegment extends Thing {
 
+	private final Direction direction;
+
 	BeamSegment(Square square, Direction dir, Set<BeamSegment> beam) {
-		if (square != null && square.accept(this)) {
+		this.direction = dir;
+		if (square == null) return;
+		if (square.accept(this)) {
 			beam.add(this);
 			new BeamSegment(square.neighbor(dir), dir, beam);
+		} else {
+			if (square.thing instanceof Mirror)
+				((Mirror)square.thing).reflectLaserGoing(dir, beam);
 		}
 	}
 	
@@ -25,6 +37,10 @@ public class BeamSegment extends Thing {
 	
 	@Override
 	public String toString() {
-		return "-";
+		if (direction == UP   ) return "|";
+		if (direction == DOWN ) return "|";
+		if (direction == LEFT ) return "-";
+		if (direction == RIGHT) return "-";
+		throw new IllegalStateException();
 	}
 }

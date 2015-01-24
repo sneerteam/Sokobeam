@@ -73,6 +73,22 @@ public class SokabotaTest extends Assert {
 	}
 
 	@Test
+	public void mirrorsReflectLaser() {
+		subject = new Sokabota(
+				"1  ",
+				"> /");
+		
+		tap(1,	"1  ",
+				"* /");
+		
+		tap(1,	"1 |",
+				"*-/");
+
+		scene(	"1  ",
+				"> /");
+	}
+
+	@Test
 	public void victory() {
 		subject = new Sokabota(
 				"1!",

@@ -35,7 +35,10 @@ public class Sokabota extends Game {
 		if (character.equals("V")) return new Gun(DOWN);
 		if (character.equals(">")) return new Gun(RIGHT);
 		if (character.equals("<")) return new Gun(LEFT);
-		
+
+		if (character.equals("/" )) return new Mirror("/");
+		if (character.equals("\\")) return new Mirror("\\");
+
 		throw new IllegalStateException("Unknown character: " + character);
 	}
 
