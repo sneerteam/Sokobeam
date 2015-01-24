@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -28,6 +29,8 @@ import sneer.gameengine.grid.Direction;
 import sneer.gameengine.grid.Square;
 import sneer.gameengine.grid.Thing;
 
+import static com.badlogic.gdx.math.MathUtils.floor;
+
 public class SokabotaApp extends ApplicationAdapter {
     private final Sokabota game;
     private TiledMap map;
@@ -36,6 +39,7 @@ public class SokabotaApp extends ApplicationAdapter {
     private Tiles tiles;
     private BitmapFont font;
     private SpriteBatch batch;
+    private TiledMapTileLayer gameLayer;
 
     public SokabotaApp(Sokabota game) {
         this.game = game;
@@ -53,37 +57,55 @@ public class SokabotaApp extends ApplicationAdapter {
 
         {
             tiles = new Tiles();
-
             map = new TiledMap();
             MapLayers layers = map.getLayers();
-            {
-                TiledMapTileLayer bgLayer = newTiledMapLayer();
-                bgLayer.setOpacity(1);
-                for (int x = 0; x < cols(); ++x) {
-                    for (int y = 0; y < rows(); ++y) {
-                        bgLayer.setCell(x, y, tiles.bg);
-                    }
-                }
-                layers.add(bgLayer);
-            }
-
-            {
-                Square[][] scene = game.scene;
-                TiledMapTileLayer gameLayer = newTiledMapLayer();
-                for (int x = 0; x < cols(); ++x) {
-                    for (int y = 0; y < rows(); ++y) {
-                        Thing t = scene[y][x].thing;
-                        TiledMapTileLayer.Cell cell = tiles.forThing(t);
-                        if (cell != null)
-                            gameLayer.setCell(x, y, cell);
-                    }
-                }
-                layers.add(gameLayer);
-            }
+            layers.add(backgroundLayer());
+            gameLayer = newTiledMapLayer();
+            updateGame();
+            layers.add(gameLayer);
         }
 
         renderer = new OrthogonalTiledMapRenderer(map, 1 / 16f);
 
+        Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
+            @Override
+            public boolean tap(float x, float y, int count, int button) {
+                game.tap(1, tileRow(y), tileCol(x));
+                updateGame();
+                return false;
+            }
+        }));
+
+    }
+
+    private int tileCol(float x) {
+        return floor(x / Gdx.graphics.getWidth() * cols());
+    }
+
+    private int tileRow(float y) {
+        return floor(y / Gdx.graphics.getHeight() * rows());
+    }
+
+    private void updateGame() {
+        Square[][] scene = game.scene;
+        for (int x = 0; x < cols(); ++x) {
+            for (int y = 0; y < rows(); ++y) {
+                Thing t = scene[y][x].thing;
+                TiledMapTileLayer.Cell cell = tiles.forThing(t);
+                gameLayer.setCell(x, y, cell);
+            }
+        }
+    }
+
+    private TiledMapTileLayer backgroundLayer() {
+        TiledMapTileLayer bgLayer = newTiledMapLayer();
+        bgLayer.setOpacity(1);
+        for (int x = 0; x < cols(); ++x) {
+            for (int y = 0; y < rows(); ++y) {
+                bgLayer.setCell(x, y, tiles.bg);
+            }
+        }
+        return bgLayer;
     }
 
     private TiledMapTileLayer newTiledMapLayer() {
