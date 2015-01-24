@@ -18,10 +18,13 @@ import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.utils.Array;
 
+import sneer.game.sokabota.core.ExitDoor;
 import sneer.game.sokabota.core.Gun;
+import sneer.game.sokabota.core.Mirror;
 import sneer.game.sokabota.core.Player;
 import sneer.game.sokabota.core.Sokabota;
 import sneer.game.sokabota.core.Wall;
+import sneer.gameengine.grid.Direction;
 import sneer.gameengine.grid.Square;
 import sneer.gameengine.grid.Thing;
 
@@ -30,7 +33,7 @@ public class SokabotaApp extends ApplicationAdapter {
     private TiledMap map;
     private TiledMapRenderer renderer;
     private OrthographicCamera camera;
-    private TileLoader tiles;
+    private Tiles tiles;
     private BitmapFont font;
     private SpriteBatch batch;
 
@@ -40,8 +43,6 @@ public class SokabotaApp extends ApplicationAdapter {
 
     @Override
     public void create () {
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, cols(), rows());
@@ -51,20 +52,7 @@ public class SokabotaApp extends ApplicationAdapter {
         batch = new SpriteBatch();
 
         {
-            tiles = new TileLoader();
-
-            TiledMapTileLayer.Cell bgCell = tiles.cell(12);
-            TiledMapTileLayer.Cell wall = tiles.cell(24);
-            TiledMapTileLayer.Cell gunLeft = tiles.animated(1, 4, 5);
-            TiledMapTileLayer.Cell gunDown = tiles.animated(1, 6, 7);
-            TiledMapTileLayer.Cell gunRight = tiles.animated(1, 8, 9);
-            TiledMapTileLayer.Cell gunUp = tiles.animated(1, 10, 11);
-            TiledMapTileLayer.Cell[] players = new TiledMapTileLayer.Cell[] {
-                    tiles.cell(19),
-                    tiles.cell(20),
-                    tiles.cell(21),
-                    tiles.cell(22)
-            };
+            tiles = new Tiles();
 
             map = new TiledMap();
             MapLayers layers = map.getLayers();
@@ -73,7 +61,7 @@ public class SokabotaApp extends ApplicationAdapter {
                 bgLayer.setOpacity(1);
                 for (int x = 0; x < cols(); ++x) {
                     for (int y = 0; y < rows(); ++y) {
-                        bgLayer.setCell(x, y, bgCell);
+                        bgLayer.setCell(x, y, tiles.bg);
                     }
                 }
                 layers.add(bgLayer);
@@ -85,13 +73,9 @@ public class SokabotaApp extends ApplicationAdapter {
                 for (int x = 0; x < cols(); ++x) {
                     for (int y = 0; y < rows(); ++y) {
                         Thing t = scene[y][x].thing;
-                        if (t instanceof Gun) {
-                            gameLayer.setCell(x, y, selectGun((Gun)t, gunLeft, gunRight, gunUp, gunDown));
-                        } else if (t instanceof Wall) {
-                            gameLayer.setCell(x, y, wall);
-                        } else if (t instanceof Player) {
-                            gameLayer.setCell(x, y, players[((Player)t).number() - 1]);
-                        }
+                        TiledMapTileLayer.Cell cell = tiles.forThing(t);
+                        if (cell != null)
+                            gameLayer.setCell(x, y, cell);
                     }
                 }
                 layers.add(gameLayer);
@@ -100,16 +84,6 @@ public class SokabotaApp extends ApplicationAdapter {
 
         renderer = new OrthogonalTiledMapRenderer(map, 1 / 16f);
 
-    }
-
-    private TiledMapTileLayer.Cell selectGun(Gun t, TiledMapTileLayer.Cell gunLeft, TiledMapTileLayer.Cell gunRight, TiledMapTileLayer.Cell gunUp, TiledMapTileLayer.Cell gunDown) {
-        switch (t.direction) {
-            case UP: return gunUp;
-            case DOWN: return gunDown;
-            case LEFT: return gunLeft;
-            case RIGHT: return gunRight;
-            default: throw new IllegalStateException();
-        }
     }
 
     private TiledMapTileLayer newTiledMapLayer() {
@@ -137,6 +111,60 @@ public class SokabotaApp extends ApplicationAdapter {
         batch.end();
     }
 
+    static class Tiles {
+        final TileLoader tiles = new TileLoader();
+        final TiledMapTileLayer.Cell exitDoor = tiles.cell(0);
+        final TiledMapTileLayer.Cell bg = tiles.cell(12);
+        final TiledMapTileLayer.Cell wall = tiles.cell(24);
+        final TiledMapTileLayer.Cell mirrorLeft = tiles.cell(16);
+        final TiledMapTileLayer.Cell mirrorRight = tiles.cell(18);
+        final TiledMapTileLayer.Cell gunLeft = tiles.animated(1, 4, 5);
+        final TiledMapTileLayer.Cell gunDown = tiles.animated(1, 6, 7);
+        final TiledMapTileLayer.Cell gunRight = tiles.animated(1, 8, 9);
+        final TiledMapTileLayer.Cell gunUp = tiles.animated(1, 10, 11);
+        final TiledMapTileLayer.Cell[] players = new TiledMapTileLayer.Cell[] {
+                tiles.cell(19),
+                tiles.cell(20),
+                tiles.cell(21),
+                tiles.cell(22)
+        };
+
+        public TiledMapTileLayer.Cell forGun(Gun gun) {
+            switch (gun.direction) {
+                case UP: return gunUp;
+                case DOWN: return gunDown;
+                case LEFT: return gunLeft;
+                case RIGHT: return gunRight;
+                default: throw new IllegalStateException();
+            }
+        }
+
+        public TiledMapTileLayer.Cell forPlayer(Player player) {
+            return players[player.number() - 1];
+        }
+
+        public TiledMapTileLayer.Cell forThing(Thing t) {
+            if (t instanceof Gun) {
+                return forGun((Gun) t);
+            } else if (t instanceof Wall) {
+                return wall;
+            } else if (t instanceof Player) {
+                return forPlayer((Player) t);
+            } else if (t instanceof Mirror) {
+                return forMirror((Mirror)t);
+            } else if (t instanceof ExitDoor) {
+                return exitDoor;
+            }
+            return null;
+        }
+
+        private TiledMapTileLayer.Cell forMirror(Mirror mirror) {
+            return mirror.direction == Direction.LEFT
+                    ? mirrorLeft
+                    : mirrorRight;
+        }
+    }
+
     static class TileLoader {
         private TextureRegion[] tiles;
 
@@ -156,11 +184,15 @@ public class SokabotaApp extends ApplicationAdapter {
         }
 
         public AnimatedTiledMapTile animatedTile(float period, int... cols) {
+            return new AnimatedTiledMapTile(period, staticTiles(cols));
+        }
+
+        private Array<StaticTiledMapTile> staticTiles(int[] cols) {
             Array<StaticTiledMapTile> array = new Array<>(cols.length);
             for (int i = 0; i < cols.length; i++) {
                 array.add(staticTile(cols[i]));
             }
-            return new AnimatedTiledMapTile(period, array);
+            return array;
         }
 
         private StaticTiledMapTile staticTile(int col) {
