@@ -19,6 +19,8 @@ public class BeamSegment extends Thing {
 	protected void collideWith(Thing other) {
 		if (other instanceof Player)
 			((Player)other).die();
+		if (other instanceof Box)
+			other.disappear();
 	}
 	
 	@Override
