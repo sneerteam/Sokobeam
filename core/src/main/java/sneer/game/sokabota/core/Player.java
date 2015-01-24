@@ -1,20 +1,16 @@
 package sneer.game.sokabota.core;
 
+import sneer.gameengine.grid.Direction;
 import sneer.gameengine.grid.Square;
 import sneer.gameengine.grid.Thing;
 
 public class Player extends Thing {
 	
-	public static final Player P1 = new Player(1);
-	public static final Player P2 = new Player(2);
-	public static final Player P3 = new Player(3);
-	public static final Player P4 = new Player(4);
-
 	private final int number;
 	private boolean isDead = false;
 	private boolean isVictorious = false;
 	
-	private Player(int number) {
+	public Player(int number) {
 		this.number = number;
 	}
 	
@@ -23,12 +19,15 @@ public class Player extends Thing {
 		return isDead ? "+" : "" + number;
 	}
 
-	public void tap(Square square) {
-		Thing target = square.thing;
-		if (target != null && target instanceof Gun)
-			((Gun)target).toggle();
-		else
-			square.accept(this);
+	public void tap(Square dest) {
+		if (dest.accept(this)) return;
+		if (hasDisappeared) return;
+		Direction dir = square.neighborDirection(dest);
+		if (dir == null) return; //Not neighbor
+
+		Thing obstacle = dest.thing;
+		if (obstacle.push(dir))
+			dest.accept(this);
 	}
 
 	@Override

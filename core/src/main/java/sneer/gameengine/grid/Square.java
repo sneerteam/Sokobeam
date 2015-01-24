@@ -1,5 +1,10 @@
 package sneer.gameengine.grid;
 
+import static sneer.gameengine.grid.Direction.UP;
+import static sneer.gameengine.grid.Direction.DOWN;
+import static sneer.gameengine.grid.Direction.LEFT;
+import static sneer.gameengine.grid.Direction.RIGHT;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,5 +75,14 @@ public class Square extends Utils {
 	@Override
 	public String toString() {
 		return thing == null ? " " : thing.toString();
+	}
+
+
+	public Direction neighborDirection(Square dest) {
+		if (neighbors.get(UP   ) == dest) return UP;
+		if (neighbors.get(DOWN ) == dest) return DOWN;
+		if (neighbors.get(LEFT ) == dest) return LEFT;
+		if (neighbors.get(RIGHT) == dest) return RIGHT;
+		return null;
 	}
 }

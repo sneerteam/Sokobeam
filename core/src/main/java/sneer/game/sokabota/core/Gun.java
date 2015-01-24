@@ -15,8 +15,10 @@ public class Gun extends Thing {
 	}
 	
 	@Override
-	public String toString() {
-		return ">";
+	public boolean push(Direction dir) {
+		if (super.push(dir)) return true;
+		toggle();
+		return false;
 	}
 
 	public void toggle() {
@@ -30,4 +32,9 @@ public class Gun extends Thing {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return ">";
+	}
+	
 }

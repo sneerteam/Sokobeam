@@ -1,12 +1,8 @@
 package sneer.game.sokabota.core.test;
 
-import static sneer.game.sokabota.core.Player.P1;
-import static sneer.game.sokabota.core.Player.P2;
-
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.game.sokabota.core.Player;
 import sneer.game.sokabota.core.Sokabota;
 
 public class SokabotaTest extends Assert {
@@ -18,21 +14,21 @@ public class SokabotaTest extends Assert {
 		subject = new Sokabota(
 				"W1 ");
 		
-		tap(P1, "*1 ");
+		tap(1,  "*1 ");
 
-		tap(P1, "W1*");
+		tap(1,  "W1*");
 		
 		scene(  "W 1");
 	}
 	
 	@Test
-	public void movementTo() {
+	public void farMovement() {
 		subject = new Sokabota(
-				" 1 ");
+				"1  >");
 		
-		tap(P1, " 1*");
-		
-		scene(  "  1");
+		tap(1,  "1  *");
+
+		scene(  "1  >");
 	}
 	
 	@Test
@@ -41,10 +37,10 @@ public class SokabotaTest extends Assert {
 				"1   ",
 				">  2");
 		
-		tap(P1,	"1   ",
+		tap(1,	"1   ",
 				"*  2");
 		
-		tap(P1,	"1   ",
+		tap(1,	"1   ",
 				"*--+");
 		
 		scene(  "1   ",
@@ -60,10 +56,10 @@ public class SokabotaTest extends Assert {
 
 		assertFalse(subject.isVictorious());
 		
-		tap(P1,	"1*",
+		tap(1,	"1*",
 				" 2");
 		
-		tap(P2,	" *",
+		tap(2,	" *",
 				" 2");
 		
 		scene(  " !",
@@ -74,7 +70,7 @@ public class SokabotaTest extends Assert {
 
 	
 	
-	private void tap(Player player, String... expected) {
+	private void tap(int player, String... expected) {
 		int tapLine = findTapLine(expected);
 		int tapCol  = expected[tapLine].indexOf('*');
 

@@ -38,4 +38,9 @@ public class Thing extends Utils {
 		throw new IllegalStateException("" + getClass() + " must implement toString.");
 	}
 	
+	public boolean push(Direction dir) {
+		Square neighbor = square.neighbor(dir);
+		return neighbor != null && neighbor.accept(this);
+	}
+	
 }
