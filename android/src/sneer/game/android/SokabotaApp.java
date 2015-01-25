@@ -172,21 +172,20 @@ public class SokabotaApp extends ApplicationAdapter {
         }
 
         public TiledMapTileLayer.Cell forThing(Thing t) {
-            if (t instanceof Gun) {
+            if (t instanceof Gun)
                 return forGun((Gun) t);
-            } else if (t instanceof Wall) {
+            if (t instanceof Wall)
                 return wall;
-            } else if (t instanceof Player) {
+            if (t instanceof Player)
                 return forPlayer((Player) t);
-            } else if (t instanceof Mirror) {
+            if (t instanceof Mirror)
                 return forMirror((Mirror)t);
-            } else if (t instanceof ExitDoor) {
+            if (t instanceof ExitDoor)
                 return exitDoor;
-            } else if (t instanceof BeamSegment) {
+            if (t instanceof BeamSegment)
                 return forSegment((BeamSegment) t);
-            } else if (t instanceof Box) {
+            if (t instanceof Box)
                 return box;
-            }
             return null;
         }
 
