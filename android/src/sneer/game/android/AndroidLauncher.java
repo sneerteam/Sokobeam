@@ -28,7 +28,7 @@ public class AndroidLauncher extends AndroidApplication {
                 "                           ",
                 "   bbbb bb  WWWWWWWWWWWWWWb",
                 "bbbbbbbYbbbWWWWWWWWWWWWWWbb",
-                "bbb      bbWWBb  b   2     ",
+                "bbb      bbWWbb  b   2     ",
                 "        bbbWWbbb  b        ",
                 "bbbb  bbbb WWbbbb /bb      ",
                 " /  1   bb WWWWWWW b       ",
