@@ -77,12 +77,11 @@ public class SokabotaApp extends ApplicationAdapter {
             @Override
             public boolean tap(float x, float y, int count, int button) {
 
-                boolean hadBeamCrossing = hasBeamsCrossing();
+                int gunsFiringBefore = numberOfGunsFiring();
 
                 game.tap(1, tileRow(y), tileCol(x));
 
-                boolean hasBeamCrossing = hasBeamsCrossing();
-                if (!hadBeamCrossing && hasBeamCrossing)
+                if (numberOfGunsFiring() > gunsFiringBefore)
                     laserSound.play();
 
                 updateGame();
@@ -92,20 +91,25 @@ public class SokabotaApp extends ApplicationAdapter {
         }));
     }
 
-    private boolean hasBeamsCrossing() {
-        return hasBeamCrossing(game.scene);
+    private int numberOfGunsFiring() {
+        return numberOfGunsFiring(game.scene);
     }
 
     private Sound newSound(String path) {
         return Gdx.audio.newSound(internalFile(path));
     }
 
-    private boolean hasBeamCrossing(Square[][] scene) {
+    private int numberOfGunsFiring(Square[][] scene) {
+        int total = 0;
         for (int i = 0; i < scene.length; i++)
             for (int j = 0; j < scene[i].length; j++)
-                if (scene[i][j].thing instanceof BeamCrossing)
-                    return true;
-        return false;
+                if (isGunFiring(scene[i][j].thing))
+                    total++;
+        return total;
+    }
+
+    private boolean isGunFiring(Thing thing) {
+        return thing instanceof Gun && ((Gun)thing).isOn;
     }
 
     private int tileCol(float x) {
