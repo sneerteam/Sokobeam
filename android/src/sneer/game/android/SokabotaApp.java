@@ -215,7 +215,7 @@ public class SokabotaApp extends ApplicationAdapter {
         private TextureRegion[] tiles;
 
         TileLoader() {
-            Texture texture = new Texture(Gdx.files.internal("todos.png"));
+            Texture texture = new Texture(internalFile("todos.png"));
             TextureRegion[][] splitTiles = TextureRegion.split(texture, 16, 16);
             if (splitTiles.length != 1) throw new AssertionError();
             tiles = splitTiles[0];
@@ -224,7 +224,7 @@ public class SokabotaApp extends ApplicationAdapter {
         }
 
         private Texture textureWithRepeat(String path) {
-            Texture t = new Texture(Gdx.files.internal(path));
+            Texture t = new Texture(internalFile(path));
             t.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
             return t;
         }
@@ -293,5 +293,9 @@ public class SokabotaApp extends ApplicationAdapter {
         private StaticTiledMapTile staticTileFor(TextureRegion bgTexture) {
             return new StaticTiledMapTile(bgTexture);
         }
+    }
+
+    private static FileHandle internalFile(String path) {
+        return Gdx.files.internal(path);
     }
 }
