@@ -130,7 +130,7 @@ public class SokabotaApp extends ApplicationAdapter {
                 public void run() {
                     sound.play();
                 }
-            }, i * .1f);
+            }, i * .15f);
     }
 
     private int numberOfGunsFiring() {
