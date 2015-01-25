@@ -1,7 +1,6 @@
 package sneer.game.sokabota.core.test;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.game.sokabota.core.Sokabota;
@@ -89,7 +88,6 @@ public class SokabotaTest extends Assert {
                 "> /");
     }
 
-    @Ignore
     @Test
     public void lasersCross() {
         subject = new Sokabota(
