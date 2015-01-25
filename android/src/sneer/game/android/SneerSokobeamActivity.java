@@ -14,11 +14,20 @@ import sneer.game.sokabota.core.Sokabota;
 
 public class SneerSokobeamActivity extends AndroidApplication {
 
+    private PartnerMessenger messenger;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_multiplayer_sokobeam);
-        new PartnerMessenger(this, new PartnerMessenger.Listener() {
+
+        AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+        initialize(new SokabotaApp(initialGame()), config);
+
+        messenger = startMessenger();
+    }
+
+    private PartnerMessenger startMessenger() {
+        return new PartnerMessenger(this, new PartnerMessenger.Listener() {
 
             @Override
             public void onPartnerName(String s) {
@@ -40,9 +49,12 @@ public class SneerSokobeamActivity extends AndroidApplication {
 
             }
         });
+    }
 
-        AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        initialize(new SokabotaApp(initialGame()), config);
+    @Override
+    protected void onDestroy() {
+        if (messenger != null) messenger.dispose();
+        super.onDestroy();
     }
 
     private Sokabota initialGame() {
@@ -57,31 +69,7 @@ public class SneerSokobeamActivity extends AndroidApplication {
         );
     }
 
-    private void toast(String message) {
-        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
-        toast.show();
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_multiplayer_sokobeam, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    private void toast(final String message) {
+        Toast.makeText(SneerSokobeamActivity.this, message, Toast.LENGTH_LONG).show();
     }
 }
