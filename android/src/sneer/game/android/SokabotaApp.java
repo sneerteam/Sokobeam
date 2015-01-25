@@ -92,7 +92,7 @@ public class SokabotaApp extends ApplicationAdapter {
             for (int y = 0; y < rows(); ++y) {
                 Thing t = scene[y][x].thing;
                 TiledMapTileLayer.Cell cell = tiles.forThing(t);
-                gameLayer.setCell(x, y, cell);
+                gameLayer.setCell(x, rows() - y - 1, cell);
             }
         }
     }
