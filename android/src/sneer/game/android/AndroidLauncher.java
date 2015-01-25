@@ -12,27 +12,27 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		Sokabota game = demoGame(); //initialGame();
+		Sokabota game = initialGame(); //demoGame();
         initialize(new SokabotaApp(game), config);
 	}
 
     private Sokabota initialGame() {
         return new Sokabota(
+                "              Y            ",
                 "                           ",
                 "                           ",
+                "Y                          ",
+                " bbbbbbbb<                 ",
+                "bbbbbbbbbb                 ",
                 "                           ",
                 "                           ",
-                "                           ",
-                "                           ",
-                "                           ",
-                "                           ",
-                "                           ",
-                "                           ",
-                "                           ",
-                "                           ",
-                "                           ",
-                "                           ",
-                "                           "
+                "   bbbb bb  WWWWWWWWWWWWWWb",
+                "bbbbbbbYbbbWWWWWWWWWWWWWWbb",
+                "bbb      bbWWBb  b   2     ",
+                "        bbbWWbbb  b        ",
+                "bbbb  bbbb WWbbbb /bb      ",
+                " /  1   bb WWWWWWW b       ",
+                "        bb WWW! bb         "
         );
     }
 
@@ -134,11 +134,11 @@ public class AndroidLauncher extends AndroidApplication {
                 "                           ",
                 "                           ",
                 "    bbb bb  WWWWWWWWWWWWWWb",
-                "bbbbbbbYbbb WWWWWWWWWWWWWbb",
-                "bbb      bbbbbb  b   2     ",
-                "        bbbbbbbb  b        ",
-                "bbbb  bbbb bbbbbb /bb      ",
-                " /  1   bb  bWWWWW b       ",
-                "        bb  bW! bb         "
+                "bbbbbbbYbbbWWWWWWWWWWWWWWbb",
+                "bbb      bbWWBb  b   2     ",
+                "        bbbWWbbb  b        ",
+                "bbbb  bbbb WWbbbb /bb      ",
+                " /  1   bb WWWWWWW b       ",
+                "        bb WWW! bb         "
 
       */
