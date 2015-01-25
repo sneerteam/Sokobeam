@@ -33,7 +33,10 @@
         </activity>
         <activity
             android:name=".SneerSokobeamActivity"
-            android:label="@string/title_activity_multiplayer_sokobeam">
+            android:label="@string/title_activity_multiplayer_sokobeam"
+            android:exported="true"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:screenOrientation="landscape" >
 
             <meta-data
                 android:name="sneer:plugin-type"
