@@ -50,24 +50,27 @@ public class Sokabota extends Game {
 	}
 
 	public void tap(int player, int line, int col) {
-		playersByNumber.get(player).tap(scene[line][col]);
-		updateLasers();
+		cleanLasers();
+		playersByNumber.get(player).tap(scene[line][col]); //TODO Do not allow warps here. Keep them for after the lasers.
+		fireLasers();
+		//TODO Handle warps here.
 	}
 
-	private void updateLasers() {
-		for (int lin = 0; lin < scene.length; lin++)
-			for (int col = 0; col < scene[0].length; col++)
-				cleanLasers(scene[lin][col]);
-
+	private void fireLasers() {
 		for (int lin = 0; lin < scene.length; lin++)
 			for (int col = 0; col < scene[0].length; col++)
 				updateLasers(scene[lin][col]);
 	}
 
+	private void cleanLasers() {
+		for (int lin = 0; lin < scene.length; lin++)
+			for (int col = 0; col < scene[0].length; col++)
+				cleanLasers(scene[lin][col]);
+	}
+
 	private void cleanLasers(Square square) {
 		if (square.thing instanceof LaserBeamable)
 			((LaserBeamable)square.thing).cleanLasers();
-		
 	}
 
 	private void updateLasers(Square square) {
