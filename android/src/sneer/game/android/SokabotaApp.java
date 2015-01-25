@@ -86,9 +86,9 @@ public class SokabotaApp extends ApplicationAdapter {
         laserSound = newSound("data/Laser.wav");
         boxExplosionSound = newSound("data/box_exploding.wav");
         fryingSound = newSound("data/fritacao_dos_personagens.wav");
-//        music = newMusic("data/violino.wav");
-//        music.setLooping(true);
-//        music.play();
+        music = newMusic("data/violino.mp3");
+        music.setLooping(true);
+        music.play();
 
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
             @Override
