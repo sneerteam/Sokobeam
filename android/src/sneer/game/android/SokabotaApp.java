@@ -49,6 +49,7 @@ public class SokabotaApp extends ApplicationAdapter {
     private TiledMapTileLayer hbeamLayer;
     private Sound laserSound;
     private Sound boxExplosionSound;
+    private Sound fryingSound;
 
     public SokabotaApp(Sokabota game) {
         this.game = game;
@@ -82,6 +83,7 @@ public class SokabotaApp extends ApplicationAdapter {
 
         laserSound = newSound("data/Laser.wav");
         boxExplosionSound = newSound("data/box_exploding.wav");
+        fryingSound = newSound("data/fritacao_dos_personagens.wav");
 
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
             @Override
@@ -89,10 +91,12 @@ public class SokabotaApp extends ApplicationAdapter {
 
                 int numberOfBoxesBefore = numberOfBoxes();
                 int gunsFiringBefore = numberOfGunsFiring();
+                int deadPlayersBefore = numberOfDeadPlayers();
 
                 game.tap(1, tileRow(y), tileCol(x));
 
                 triggerBoxExplosions(numberOfBoxesBefore);
+                triggerFryingSound(deadPlayersBefore);
                 triggerLaserSound(gunsFiringBefore);
 
                 updateGame();
@@ -102,24 +106,30 @@ public class SokabotaApp extends ApplicationAdapter {
         }));
     }
 
+    private void triggerFryingSound(int deadPlayersBefore) {
+        playMany(numberOfDeadPlayers() - deadPlayersBefore, fryingSound);
+    }
+
     private void triggerLaserSound(int gunsFiringBefore) {
-        if (numberOfGunsFiring() > gunsFiringBefore)
-            laserSound.play();
+        if (numberOfGunsFiring() > gunsFiringBefore) laserSound.play();
     }
 
     private void triggerBoxExplosions(int numberOfBoxesBefore) {
-        for (int i = 0; i < numberOfBoxesBefore - numberOfBoxes(); ++i)
-            Timer.schedule(new Timer.Task() { @Override public void run() {
-                boxExplosionSound.play();
-            }}, i * .1f);
+        playMany(numberOfBoxesBefore - numberOfBoxes(), boxExplosionSound);
+    }
+
+    private void playMany(int times, final Sound sound) {
+        for (int i = 0; i < times; ++i)
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    sound.play();
+                }
+            }, i * .1f);
     }
 
     private int numberOfGunsFiring() {
         return numberOfGunsFiring(game.scene);
-    }
-
-    private Sound newSound(String path) {
-        return Gdx.audio.newSound(internalFile(path));
     }
 
     private int numberOfGunsFiring(Square[][] scene) {
@@ -129,6 +139,23 @@ public class SokabotaApp extends ApplicationAdapter {
                 if (isGunFiring(scene[i][j].thing))
                     total++;
         return total;
+    }
+
+    private int numberOfDeadPlayers() {
+        return numberOfDeadPlayers(game.scene);
+    }
+
+    private int numberOfDeadPlayers(Square[][] scene) {
+        int total = 0;
+        for (int i = 0; i < scene.length; i++)
+            for (int j = 0; j < scene[i].length; j++)
+                if (isDeadPlayer(scene[i][j].thing))
+                    total++;
+        return total;
+    }
+
+    private boolean isDeadPlayer(Thing thing) {
+        return thing instanceof Player && ((Player)thing).isDead();
     }
 
     private int numberOfBoxes() {
@@ -214,6 +241,10 @@ public class SokabotaApp extends ApplicationAdapter {
 
     private TiledMapTileLayer newTiledMapLayer() {
         return new TiledMapTileLayer(cols(), rows(), 16, 16);
+    }
+
+    private Sound newSound(String path) {
+        return Gdx.audio.newSound(internalFile(path));
     }
 
     private int rows() {
