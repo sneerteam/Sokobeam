@@ -12,7 +12,8 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new SokabotaApp(initialGame()), config);
+		Sokabota game = demoGame(); //initialGame();
+        initialize(new SokabotaApp(game), config);
 	}
 
     private Sokabota initialGame() {
@@ -32,6 +33,18 @@ public class AndroidLauncher extends AndroidApplication {
                 "                           ",
                 "                           ",
                 "                           "
+        );
+    }
+
+    private Sokabota demoGame() {
+        return new Sokabota(
+                "WWWWWWWWWWWWWWWW",
+                "W  b     b     W",
+                "W        b     W",
+                "W  1     b     W",
+                "W  \\          <W",
+                "W>       /    bW",
+                "WWWWWWWWWWWWWW!W"
         );
     }
 }
