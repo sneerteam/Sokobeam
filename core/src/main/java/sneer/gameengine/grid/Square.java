@@ -6,6 +6,7 @@ import static sneer.gameengine.grid.Direction.LEFT;
 import static sneer.gameengine.grid.Direction.RIGHT;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class Square extends Utils {
@@ -84,5 +85,27 @@ public class Square extends Utils {
 		if (neighbors.get(LEFT ) == dest) return LEFT;
 		if (neighbors.get(RIGHT) == dest) return RIGHT;
 		return null;
+	}
+
+
+	public boolean isNeighbor(Square other) {
+		return neighbors.containsValue(other);
+	}
+
+
+	public boolean hasClearPathTo(Square dest) {
+		return hasClearPathTo(this, dest, new HashSet<Square>());
+	}
+
+
+	private boolean hasClearPathTo(Square orig, Square dest, HashSet<Square> visited) {
+		if (this == dest) return true;
+		if (visited.contains(this)) return false;
+		visited.add(this);
+
+		if (this != orig && thing != null) return false;
+		for (Square n : neighbors.values())
+			if (n.hasClearPathTo(orig, dest, visited)) return true;
+		return false;
 	}
 }

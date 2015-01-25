@@ -50,11 +50,24 @@ public class Sokabota extends Game {
 		return ret;
 	}
 
-	public void tap(int player, int line, int col) {
+	public void tap(int playerNumber, int line, int col) {
+		Player player = playersByNumber.get(playerNumber);
+		boolean isWarp = isWarp(player, line, col);
 		cleanLasers();
-		playersByNumber.get(player).tap(scene[line][col]); //TODO Do not allow warps here. Keep them for after the lasers.
+		if ( isWarp) fireLasers();
+		player.tap(scene[line][col]);
+		if (!isWarp) fireLasers();
 		fireLasers();
-		//TODO Handle warps here.
+	}
+
+	private boolean isWarp(Player player, int line, int col) {
+		Square orig = player.square;
+		Square dest = scene[line][col];
+		if (orig == null) return false;
+		if (dest == null) return false;
+		if (orig == dest) return false;
+		if (orig.isNeighbor(dest)) return false;
+		return true;
 	}
 
 	private void fireLasers() {

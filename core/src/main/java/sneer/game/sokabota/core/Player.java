@@ -22,6 +22,7 @@ public class Player extends Thing {
 	}
 
 	public void tap(Square dest) {
+		if (!square.hasClearPathTo(dest)) return;
 		if (dest.accept(this)) return;
 		if (hasDisappeared) return;
 		Direction dir = square.neighborDirection(dest);

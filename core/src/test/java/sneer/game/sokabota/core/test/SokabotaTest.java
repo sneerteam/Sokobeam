@@ -98,6 +98,30 @@ public class SokabotaTest extends Assert {
     }
 
     @Test
+    public void warpOnlyWithClearPath() {
+        subject = new Sokabota(
+        		"1   ",
+                "b   ",
+                "  Ab");
+
+        tap(1,	"1   ",
+        		"b   ",
+                " *Ab");
+
+        tap(1,	"    ",
+        		"b   ",
+                " 1*b");
+
+        tap(1,	"  |*",
+        		"b | ",
+                " 1Ab");
+
+        scene(	"  | ",
+        		"b | ",
+                " 1Ab");
+    }
+
+    @Test
 	public void victory() {
 		subject = new Sokabota(
 				"1!",
