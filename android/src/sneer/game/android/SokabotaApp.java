@@ -75,7 +75,7 @@ public class SokabotaApp extends ApplicationAdapter {
             hbeamLayer = newTiledMapLayer();
             layers.add(hbeamLayer);
             gameLayer = newTiledMapLayer();
-            updateGame();
+            updateScreen();
             layers.add(gameLayer);
         }
 
@@ -99,7 +99,7 @@ public class SokabotaApp extends ApplicationAdapter {
                 triggerFryingSound(deadPlayersBefore);
                 triggerLaserSound(gunsFiringBefore);
 
-                updateGame();
+                updateScreen();
 
                 return false;
             }
@@ -183,7 +183,7 @@ public class SokabotaApp extends ApplicationAdapter {
         return floor(y / Gdx.graphics.getHeight() * rows());
     }
 
-    private void updateGame() {
+    private void updateScreen() {
         Square[][] scene = game.scene;
         updateCells(scene);
     }
@@ -289,7 +289,6 @@ public class SokabotaApp extends ApplicationAdapter {
                 tiles.cell(21),
                 tiles.cell(22)
         };
-
 
         public TiledMapTileLayer.Cell forGun(Gun gun) {
             switch (gun.direction) {
