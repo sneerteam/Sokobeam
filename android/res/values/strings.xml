@@ -2,8 +2,7 @@
 <resources>
 
     <string name="app_name">Sokobeam</string>
-    <string name="title_activity_multiplayer_sokobeam">MultiplayerSokobeamActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_multiplayer_sokobeam">Sneer Sokobeam</string>
     <string name="action_settings">Settings</string>
 
 </resources>
