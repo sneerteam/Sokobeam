@@ -284,10 +284,14 @@ public class SokabotaApp extends ApplicationAdapter {
         final TiledMapTileLayer.Cell beamH = beamH();
         final TiledMapTileLayer.Cell beamV = beamV();
         final TiledMapTileLayer.Cell bg = tiles.cell(12);
+        final TiledMapTileLayer.Cell reflectionLowerLeft = tiles.cell(13);
+        final TiledMapTileLayer.Cell reflectionLowerRight = tiles.cell(14);
+        final TiledMapTileLayer.Cell reflectionUpRight = tiles.cell(15);
+        final TiledMapTileLayer.Cell reflectionUpLeft = tiles.cell(17);
         final TiledMapTileLayer.Cell box = tiles.cell(23);
         final TiledMapTileLayer.Cell wall = tiles.cell(24);
-        final TiledMapTileLayer.Cell mirrorLeft = tiles.cell(16);
-        final TiledMapTileLayer.Cell mirrorRight = tiles.cell(18);
+        final TiledMapTileLayer.Cell leftMirror = tiles.cell(16);
+        final TiledMapTileLayer.Cell rightMirror = tiles.cell(18);
         final TiledMapTileLayer.Cell gunLeft = tiles.animated(1, 4, 5);
         final TiledMapTileLayer.Cell gunDown = tiles.animated(1, 6, 7);
         final TiledMapTileLayer.Cell gunRight = tiles.animated(1, 8, 9);
@@ -330,7 +334,21 @@ public class SokabotaApp extends ApplicationAdapter {
         }
 
         private TiledMapTileLayer.Cell forMirror(Mirror mirror) {
-            return mirror.orientation.equals("/") ? mirrorRight : mirrorLeft;
+            return mirror.orientation.equals("/")
+                    ? rightMirror(mirror)
+                    : leftMirror(mirror);
+        }
+
+        private TiledMapTileLayer.Cell leftMirror(Mirror mirror) {
+            return mirror.hasUpperReflection
+                    ? reflectionUpRight
+                    : mirror.hasLowerReflection ? reflectionLowerLeft : leftMirror;
+        }
+
+        private TiledMapTileLayer.Cell rightMirror(Mirror mirror) {
+            return mirror.hasUpperReflection
+                    ? reflectionUpLeft
+                    : mirror.hasLowerReflection ? reflectionLowerRight : rightMirror;
         }
 
         private TiledMapTileLayer.Cell beamH() {

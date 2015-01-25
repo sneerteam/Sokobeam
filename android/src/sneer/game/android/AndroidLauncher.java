@@ -38,13 +38,14 @@ public class AndroidLauncher extends AndroidApplication {
 
     private Sokabota demoGame() {
         return new Sokabota(
-                "WWWWWWWWWWWWWWWW",
-                "W  b     b     W",
-                "W        b     W",
-                "W  1     b     W",
-                "W  \\          <W",
-                "W>       /    bW",
-                "WWWWWWWWWWWWWW!W"
+                "WWWWWWWWWWWWWWWWW",
+                "W/ b     Y      W",
+                "W  /     b    Y W",
+                "WY 1     b   W  W",
+                "W  Y           <W",
+                "W>       Y    /WW",
+                "Wbbbb    /      W",
+                "WWWWWWWWWWWWWWW!W"
         );
     }
 }
