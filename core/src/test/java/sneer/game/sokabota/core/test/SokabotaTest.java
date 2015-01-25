@@ -68,8 +68,8 @@ public class SokabotaTest extends Assert {
 		tap(1,	"1   ",
 				"* b ");
 		
-		tap(1,	"1   ",
-				"*---");
+		scene(	"1   ",
+				">---");
 		
 	}
 
