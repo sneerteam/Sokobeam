@@ -18,20 +18,20 @@ public class AndroidLauncher extends AndroidApplication {
     private Sokabota initialGame() {
         return new Sokabota(
                 "WWWWWWWWWWWWWWWWWWWWWWWWWWW",
-                "W   V                    !W",
-                "W > 1 <                   W",
-                "W \\ A /                   W",
+                "W>      W        W        W",
+                "W  \\     W        W        W",
+                "W  2    W        W        W",
+                "WWWWWWWbW        W        W",
                 "W                         W",
                 "W                         W",
-                "W   V                     W",
-                "W > 1 <                   W",
-                "W \\ A /                   W",
+                "W            /            W",
+                "W     \\                   W",
                 "W                         W",
-                "W                         W",
-                "W                         W",
-                "W > 1 <                   W",
-                "W \\ A /                   W",
-                "WWWWWWWWWWWWWWWWWWWWWWWWWWW"
+                "W           WWWWWWWWWWWWbbW",
+                "W      1    W           bbW",
+                "W           W             W",
+                "W A         W b           W",
+                "WWWWWWWWWWWWWW!WWWWWWWWWWWW"
         );
     }
 }
