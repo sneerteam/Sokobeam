@@ -250,15 +250,15 @@ public class SokabotaApp extends ApplicationAdapter {
             return new AnimatedTiledMapTile(period, staticTiles(cols));
         }
 
-        public TiledMapTileLayer.Cell textureAnimation(Texture t, boolean vertical, int frames) {
-            int delta = round((vertical ? t.getHeight() : t.getWidth()) / (float)frames);
-            TextureRegion[] ts = new TextureRegion[frames];
-            for (int i = 0; i < frames; i++) {
-                ts[i] = vertical
+        public TiledMapTileLayer.Cell textureAnimation(Texture t, boolean vertical, int frameCount) {
+            TextureRegion[] frames = new TextureRegion[frameCount];
+            int delta = round((vertical ? t.getHeight() : t.getWidth()) / (float)frameCount);
+            for (int i = 0; i < frameCount; i++) {
+                frames[i] = vertical
                         ? new TextureRegion(t, 0, delta * i, t.getWidth(), t.getHeight())
                         : new TextureRegion(t, delta * i, 0, t.getWidth(), t.getHeight());
             }
-            return animated(1.0f / frames, ts);
+            return animated(1.0f / frameCount, frames);
         }
 
         private Array<StaticTiledMapTile> staticTiles(int[] cols) {
