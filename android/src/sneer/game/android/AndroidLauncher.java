@@ -105,6 +105,21 @@ public class AndroidLauncher extends AndroidApplication {
                 "                           ",
                 " \\             <W           "
 
+            Fase semi-complexa
 
-
+                "1 bb      W bbb            ",
+                "bbb       W bbbbb     Y  bb",
+                "b bb    > W    bb     bbbbb",
+                "bb        W                ",
+                "          Wb           2   ",
+                "          bb               ",
+                "WWWWWWWWWWWb               ",
+                "!W                         ",
+                "bW                         ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "    / Y                    ",
+                "                           "
       */
