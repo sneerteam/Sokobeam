@@ -205,29 +205,12 @@ public class SokabotaApp extends ApplicationAdapter {
     }
 
     private void updateGameCell(int col, int row, Thing t) {
-        TiledMapTileLayer.Cell cell = tiles.forThing(t);
-        gameLayer.setCell(col, row, cell);
+        gameLayer.setCell(col, row, tiles.forThing(t));
     }
 
     private void updateBeamCell(int col, int row, Thing t) {
-        vbeamLayer.setCell(col, row, verticalBeamCellFor(t));
-        hbeamLayer.setCell(col, row, horizontalBeamCellFor(t));
-    }
-
-    private TiledMapTileLayer.Cell horizontalBeamCellFor(Thing t) {
-        if (t instanceof BeamCrossing) {
-            BeamCrossing b = (BeamCrossing)t;
-            return b.hasHorizontalBeam ? tiles.beamH : null;
-        }
-        return null;
-    }
-
-    private TiledMapTileLayer.Cell verticalBeamCellFor(Thing t) {
-        if (t instanceof BeamCrossing) {
-            BeamCrossing b = (BeamCrossing)t;
-            return b.hasVerticalBeam ? tiles.beamV : null;
-        }
-        return null;
+        vbeamLayer.setCell(col, row, tiles.verticalBeamCellFor(t));
+        hbeamLayer.setCell(col, row, tiles.horizontalBeamCellFor(t));
     }
 
     private TiledMapTileLayer backgroundLayer() {
@@ -303,20 +286,6 @@ public class SokabotaApp extends ApplicationAdapter {
                 tiles.cell(22)
         };
 
-        public TiledMapTileLayer.Cell forGun(Gun gun) {
-            switch (gun.direction) {
-                case UP: return gunUp;
-                case DOWN: return gunDown;
-                case LEFT: return gunLeft;
-                case RIGHT: return gunRight;
-                default: throw new IllegalStateException();
-            }
-        }
-
-        public TiledMapTileLayer.Cell forPlayer(Player player) {
-            return player.isDead() ? corpse : players[player.number() - 1];
-        }
-
         public TiledMapTileLayer.Cell forThing(Thing t) {
             if (t instanceof Gun)
                 return forGun((Gun) t);
@@ -331,6 +300,36 @@ public class SokabotaApp extends ApplicationAdapter {
             if (t instanceof Box)
                 return box;
             return null;
+        }
+
+        public TiledMapTileLayer.Cell horizontalBeamCellFor(Thing t) {
+            if (t instanceof BeamCrossing) {
+                BeamCrossing b = (BeamCrossing)t;
+                return b.hasHorizontalBeam ? beamH : null;
+            }
+            return null;
+        }
+
+        public TiledMapTileLayer.Cell verticalBeamCellFor(Thing t) {
+            if (t instanceof BeamCrossing) {
+                BeamCrossing b = (BeamCrossing)t;
+                return b.hasVerticalBeam ? beamV : null;
+            }
+            return null;
+        }
+
+        private TiledMapTileLayer.Cell forGun(Gun gun) {
+            switch (gun.direction) {
+                case UP: return gunUp;
+                case DOWN: return gunDown;
+                case LEFT: return gunLeft;
+                case RIGHT: return gunRight;
+                default: throw new IllegalStateException();
+            }
+        }
+
+        private TiledMapTileLayer.Cell forPlayer(Player player) {
+            return player.isDead() ? corpse : players[player.number() - 1];
         }
 
         private TiledMapTileLayer.Cell forMirror(Mirror mirror) {
