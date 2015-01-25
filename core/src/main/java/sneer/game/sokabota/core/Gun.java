@@ -5,7 +5,7 @@ import sneer.gameengine.grid.Thing;
 
 public class Gun extends Thing {
 
-	private Disposable beam;
+	public boolean isOn = false;
 
 	Gun(Direction dir) {
 		direction = dir;
@@ -19,17 +19,17 @@ public class Gun extends Thing {
 	}
 
 	public void toggle() {
-		if (beam == null) {
-			beam = BeamCrossing.produce(square, direction);
-		} else {
-			beam.dispose();
-			beam = null;
-		}
+		isOn = !isOn;
 	}
 
 	@Override
 	public String toString() {
 		return ">";
+	}
+
+	void fireIfOn() {
+		if (isOn)
+			BeamCrossing.produce(square, direction);
 	}
 	
 }

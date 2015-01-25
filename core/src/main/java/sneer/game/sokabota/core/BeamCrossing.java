@@ -9,20 +9,22 @@ import sneer.gameengine.grid.Thing;
 
 public class BeamCrossing extends Thing implements LaserBeamable {
 
-	public Disposable horizontalBeam = null;
-	public Disposable verticalBeam = null;
+	public boolean hasHorizontalBeam = false;
+	public boolean hasVerticalBeam   = false;
 	
 	
-	static Disposable produce(Square origin, Direction dir) {
+	static void produce(Square origin, Direction dir) {
 		Square square = origin.neighbor(dir);
-		if (square == null) return null;
+		if (square == null) return;
 		
-		if (square.thing instanceof LaserBeamable)
-			return ((LaserBeamable)square.thing).takeBeam(dir);
+		if (square.thing instanceof LaserBeamable) {
+			((LaserBeamable)square.thing).takeBeam(dir);
+			return;
+		}
 		
 		BeamCrossing next = new BeamCrossing();
-		if (!square.accept(next)) return null;
-		return next.takeBeam(dir);
+		if (!square.accept(next)) return;
+		next.takeBeam(dir);
 	}
 	
 	private BeamCrossing() {}
@@ -37,38 +39,26 @@ public class BeamCrossing extends Thing implements LaserBeamable {
 	}
 
 	@Override
-	public Disposable takeBeam(Direction dir) {
+	public void takeBeam(Direction dir) {
 		if (dir == UP || dir == DOWN) {
-			verticalBeam = propagate(verticalBeam, dir);
-			return verticalBeam;
+			hasVerticalBeam = true;
 		} else {
-			horizontalBeam = propagate(horizontalBeam, dir);
-			return horizontalBeam;
+			hasHorizontalBeam = true;
 		}
+		produce(square, dir);
 	}
-	
-	private Disposable propagate(Disposable old, Direction dir) {
-		if (old != null) throw new IllegalStateException();
-		
-		final Disposable next = produce(square, dir);
-		return new Disposable() { @Override public void dispose() {
-			if (next != null) next.dispose();
-			if (this == horizontalBeam) {
-				horizontalBeam = null;
-			}
-			if (this == verticalBeam) {
-				verticalBeam = null;
-			}
-			if (verticalBeam == null && horizontalBeam == null)
-				disappear();
-		}};
+
+	@Override
+	public void cleanLasers() {
+		disappear();		
 	}
 
 	@Override
 	public String toString() {
-		if (horizontalBeam != null && verticalBeam != null) return "+";
-		if (horizontalBeam != null) return "-";
-		if (verticalBeam   != null) return "|";
+		if (hasHorizontalBeam && hasVerticalBeam) return "+";
+		if (hasHorizontalBeam) return "-";
+		if (hasVerticalBeam) return "|";
 		throw new IllegalStateException();
 	}
+
 }

@@ -4,6 +4,8 @@ import sneer.gameengine.grid.Direction;
 
 public interface LaserBeamable {
 
-	Disposable takeBeam(Direction dir);
+	void takeBeam(Direction dir);
+
+	void cleanLasers();
 
 }

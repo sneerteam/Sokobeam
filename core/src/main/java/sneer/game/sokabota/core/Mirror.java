@@ -10,15 +10,15 @@ import sneer.gameengine.grid.Thing;
 public class Mirror extends Thing implements LaserBeamable {
 
 	public String orientation;
-	public Disposable upperReflection;
-	public Disposable lowerReflection;
+	public boolean hasUpperReflection;
+	public boolean hasLowerReflection;
 	
 	public Mirror(String orientation) {
 		this.orientation = orientation;
 	}
 	
 	@Override
-	public Disposable takeBeam(Direction in) {
+	public void takeBeam(Direction in) {
 		Direction out = null;
 		if (in == RIGHT && orientation.equals("/" )) out = UP;
 		if (in == LEFT  && orientation.equals("/" )) out = DOWN;
@@ -30,35 +30,22 @@ public class Mirror extends Thing implements LaserBeamable {
 		if (in == UP    && orientation.equals("\\")) out = LEFT;
 		if (in == DOWN  && orientation.equals("\\")) out = RIGHT;
 		
-		return reflection(in, out);
+		takeBeam(in, out);
 	}
 
-	private Disposable reflection(Direction in, Direction out) {
+	private void takeBeam(Direction in, Direction out) {
 		if (in == UP || out == UP) {
-			upperReflection = reflection(upperReflection, in, out);
-			return upperReflection;
+			hasUpperReflection = true;
 		} else {
-			lowerReflection = reflection(lowerReflection, in, out);
-			return lowerReflection;
+			hasLowerReflection = true;
 		}
+		BeamCrossing.produce(square, out);
 	}
-
-	private Disposable reflection(Disposable old, Direction in,	Direction out) {
-		if (old != null) throw new IllegalStateException();
-		final Disposable nextSegment = BeamCrossing.produce(square, out);
-		
-		return new Disposable() { @Override public void dispose() {
-			nextSegment.dispose();
-			if (upperReflection == this) {
-				upperReflection = null;
-				return;
-			}
-			if (lowerReflection == this) {
-				lowerReflection = null;
-				return;
-			}
-			throw new IllegalStateException();
-		}};
+	
+	@Override
+	public void cleanLasers() {
+		hasUpperReflection = false;
+		hasLowerReflection = false;
 	}
 
 	@Override

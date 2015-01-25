@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sneer.gameengine.grid.Game;
+import sneer.gameengine.grid.Square;
 import sneer.gameengine.grid.Thing;
 
 
@@ -50,6 +51,28 @@ public class Sokabota extends Game {
 
 	public void tap(int player, int line, int col) {
 		playersByNumber.get(player).tap(scene[line][col]);
+		updateLasers();
+	}
+
+	private void updateLasers() {
+		for (int lin = 0; lin < scene.length; lin++)
+			for (int col = 0; col < scene[0].length; col++)
+				cleanLasers(scene[lin][col]);
+
+		for (int lin = 0; lin < scene.length; lin++)
+			for (int col = 0; col < scene[0].length; col++)
+				updateLasers(scene[lin][col]);
+	}
+
+	private void cleanLasers(Square square) {
+		if (square.thing instanceof LaserBeamable)
+			((LaserBeamable)square.thing).cleanLasers();
+		
+	}
+
+	private void updateLasers(Square square) {
+		if (square.thing instanceof Gun)
+			((Gun)square.thing).fireIfOn();
 	}
 
 	public boolean isVictorious() {
