@@ -240,6 +240,7 @@ public class SokabotaApp extends ApplicationAdapter {
     static class Tiles {
         final TileLoader tiles = new TileLoader();
         final TiledMapTileLayer.Cell exitDoor = tiles.cell(0);
+        final TiledMapTileLayer.Cell corpse = tiles.cell(1);
         final TiledMapTileLayer.Cell beamH = beamH();
         final TiledMapTileLayer.Cell beamV = beamV();
         final TiledMapTileLayer.Cell bg = tiles.cell(12);
@@ -258,6 +259,7 @@ public class SokabotaApp extends ApplicationAdapter {
                 tiles.cell(22)
         };
 
+
         public TiledMapTileLayer.Cell forGun(Gun gun) {
             switch (gun.direction) {
                 case UP: return gunUp;
@@ -269,7 +271,7 @@ public class SokabotaApp extends ApplicationAdapter {
         }
 
         public TiledMapTileLayer.Cell forPlayer(Player player) {
-            return players[player.number() - 1];
+            return player.isDead() ? corpse : players[player.number() - 1];
         }
 
         public TiledMapTileLayer.Cell forThing(Thing t) {

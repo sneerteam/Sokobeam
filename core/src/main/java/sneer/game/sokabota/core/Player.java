@@ -16,6 +16,8 @@ public class Player extends Thing {
 
     public int number() { return number; }
 
+    public boolean isDead() { return isDead; }
+
 	@Override
 	public String toString() {
 		return isDead ? "@" : "" + number;
