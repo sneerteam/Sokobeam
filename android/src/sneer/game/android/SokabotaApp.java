@@ -2,6 +2,7 @@ package sneer.game.android;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -50,6 +51,7 @@ public class SokabotaApp extends ApplicationAdapter {
     private Sound laserSound;
     private Sound boxExplosionSound;
     private Sound fryingSound;
+    private Music music;
 
     public SokabotaApp(Sokabota game) {
         this.game = game;
@@ -84,6 +86,9 @@ public class SokabotaApp extends ApplicationAdapter {
         laserSound = newSound("data/Laser.wav");
         boxExplosionSound = newSound("data/box_exploding.wav");
         fryingSound = newSound("data/fritacao_dos_personagens.wav");
+        music = newMusic("data/violino.wav");
+        music.setLooping(true);
+        music.play();
 
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
             @Override
@@ -245,6 +250,10 @@ public class SokabotaApp extends ApplicationAdapter {
 
     private Sound newSound(String path) {
         return Gdx.audio.newSound(internalFile(path));
+    }
+
+    private Music newMusic(String path) {
+        return Gdx.audio.newMusic(internalFile(path));
     }
 
     private int rows() {
