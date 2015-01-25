@@ -13,7 +13,7 @@ import sneer.gameengine.grid.Thing;
 
 public class BeamSegment extends Thing {
 
-	private final Direction direction;
+	public final Direction direction;
 
 	BeamSegment(Square square, Direction dir, Set<BeamSegment> beam) {
 		this.direction = dir;

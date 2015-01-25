@@ -19,6 +19,7 @@ import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.utils.Array;
 
+import sneer.game.sokabota.core.BeamSegment;
 import sneer.game.sokabota.core.ExitDoor;
 import sneer.game.sokabota.core.Gun;
 import sneer.game.sokabota.core.Mirror;
@@ -136,6 +137,8 @@ public class SokabotaApp extends ApplicationAdapter {
     static class Tiles {
         final TileLoader tiles = new TileLoader();
         final TiledMapTileLayer.Cell exitDoor = tiles.cell(0);
+        final TiledMapTileLayer.Cell beamH = tiles.cell(2);
+        final TiledMapTileLayer.Cell beamV = tiles.cell(3);
         final TiledMapTileLayer.Cell bg = tiles.cell(12);
         final TiledMapTileLayer.Cell wall = tiles.cell(24);
         final TiledMapTileLayer.Cell mirrorLeft = tiles.cell(16);
@@ -176,8 +179,16 @@ public class SokabotaApp extends ApplicationAdapter {
                 return forMirror((Mirror)t);
             } else if (t instanceof ExitDoor) {
                 return exitDoor;
+            } else if (t instanceof BeamSegment) {
+                return forSegment((BeamSegment) t);
             }
             return null;
+        }
+
+        private TiledMapTileLayer.Cell forSegment(BeamSegment segment) {
+            return segment.direction == Direction.DOWN || segment.direction == Direction.UP
+                    ? beamV
+                    : beamH;
         }
 
         private TiledMapTileLayer.Cell forMirror(Mirror mirror) {
