@@ -45,7 +45,7 @@ public class Mirror extends Thing implements LaserBeamable {
 
 	private Disposable reflection(Disposable old, Direction in,	Direction out) {
 		if (old != null) throw new IllegalStateException();
-		final Disposable nextSegment = BeamSegment.create(square, out);
+		final Disposable nextSegment = BeamCrossing.produce(square, out);
 		
 		return new Disposable() { @Override public void dispose() {
 			nextSegment.dispose();

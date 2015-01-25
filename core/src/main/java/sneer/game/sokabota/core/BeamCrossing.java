@@ -9,29 +9,29 @@ import sneer.gameengine.grid.Square;
 import sneer.gameengine.grid.Thing;
 
 
-public class BeamSegment extends Thing implements Disposable {
+public class BeamCrossing extends Thing implements Disposable {
 
 	public final Direction direction;
 	public Disposable nextSegment;
 	
 	
-	static Disposable create(Square origin, Direction dir) {
+	static Disposable produce(Square origin, Direction dir) {
 		Square square = origin.neighbor(dir);
 		if (square == null) return null;
 		if (square.thing instanceof LaserBeamable)
 			return ((LaserBeamable)square.thing).takeBeam(dir);
-		BeamSegment next = new BeamSegment(dir);
+		BeamCrossing next = new BeamCrossing(dir);
 		if (!square.accept(next)) return null;
 		next.propagate();
 		return next;
 	}
 	
-	private BeamSegment(Direction direction) {
+	private BeamCrossing(Direction direction) {
 		this.direction = direction;
 	}
 
 	private void propagate() {
-		nextSegment = create(square, direction);
+		nextSegment = produce(square, direction);
 	}
 	
 	@Override

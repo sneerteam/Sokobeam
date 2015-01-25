@@ -20,7 +20,7 @@ public class Gun extends Thing {
 
 	public void toggle() {
 		if (beam == null) {
-			beam = BeamSegment.create(square, direction);
+			beam = BeamCrossing.produce(square, direction);
 		} else {
 			beam.dispose();
 			beam = null;
