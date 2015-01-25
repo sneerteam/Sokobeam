@@ -33,7 +33,7 @@
                 android:value="sokabota/move" />
             <meta-data
                 android:name="sneer:menu-caption"
-                android:value="Play Sokabota" />
+                android:value="Play Sokobeam" />
             <meta-data
                 android:name="sneer:menu-icon"
                 android:resource="@drawable/ic_launcher" />
