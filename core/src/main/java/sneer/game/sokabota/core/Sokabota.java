@@ -39,6 +39,7 @@ public class Sokabota extends Game {
 
 		if (character.equals("/" )) return new Mirror("/");
 		if (character.equals("\\")) return new Mirror("\\");
+        if (character.equals("Y"))  return new Mirror("\\");
 
 		throw new IllegalStateException("Unknown character: " + character);
 	}

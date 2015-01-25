@@ -17,21 +17,81 @@ public class AndroidLauncher extends AndroidApplication {
 
     private Sokabota initialGame() {
         return new Sokabota(
-                "WWWWWWWWWWWWWWWWWWWWWWWWWWW",
-                "W>      W        W        W",
-                "W  \\     W        W        W",
-                "W  2    W        W        W",
-                "WWWWWWWbW        W        W",
-                "W                         W",
-                "W                         W",
-                "W            /            W",
-                "W     \\                   W",
-                "W                         W",
-                "W           WWWWWWWWWWWWbbW",
-                "W      1    W           bbW",
-                "W           W             W",
-                "W A         W b           W",
-                "WWWWWWWWWWWWWW!WWWWWWWWWWWW"
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           "
         );
     }
 }
+
+
+    /*
+              Fase 1 (box&door learning)
+
+        "                           ",
+        "                           ",
+        "                           ",
+        "                           ",
+        "                           ",
+        "                           ",
+        "             1             ",
+        "                           ",
+        "                           ",
+        "                           ",
+        "                           ",
+        "                           ",
+        "                           ",
+        "              b            ",
+        "             W!W           "
+
+                Fase 2 : laser learning
+
+                "1                          ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "  >                        ",
+                "                           ",
+                "                         bb",
+                "                         b!",
+                "                         bb",
+                "                           ",
+                "                           ",
+                "                           ",
+                "          b                ",
+                "                           ",
+                "                           "
+
+           Fase 3  (mirror&laser learning)
+
+                "                          b",
+                "                         b!",
+                "                         bb",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "       /                   ",
+                "                           ",
+                "                           ",
+                "                           ",
+                "                    1      ",
+                "                           ",
+                "                           ",
+                " \\             <W           "
+
+
+
+      */
