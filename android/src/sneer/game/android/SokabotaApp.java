@@ -2,6 +2,8 @@ package sneer.game.android;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,7 +29,6 @@ import sneer.game.sokabota.core.Mirror;
 import sneer.game.sokabota.core.Player;
 import sneer.game.sokabota.core.Sokabota;
 import sneer.game.sokabota.core.Wall;
-import sneer.gameengine.grid.Direction;
 import sneer.gameengine.grid.Square;
 import sneer.gameengine.grid.Thing;
 
@@ -70,15 +71,41 @@ public class SokabotaApp extends ApplicationAdapter {
 
         renderer = new OrthogonalTiledMapRenderer(map, 1 / 16f);
 
+        final Sound laserSound = newSound("data/Laser.wav");
+
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
             @Override
             public boolean tap(float x, float y, int count, int button) {
+
+                boolean hadBeamCrossing = hasBeamsCrossing();
+
                 game.tap(1, tileRow(y), tileCol(x));
+
+                boolean hasBeamCrossing = hasBeamsCrossing();
+                if (!hadBeamCrossing && hasBeamCrossing)
+                    laserSound.play();
+
                 updateGame();
+
                 return false;
             }
         }));
+    }
 
+    private boolean hasBeamsCrossing() {
+        return hasBeamCrossing(game.scene);
+    }
+
+    private Sound newSound(String path) {
+        return Gdx.audio.newSound(internalFile(path));
+    }
+
+    private boolean hasBeamCrossing(Square[][] scene) {
+        for (int i = 0; i < scene.length; i++)
+            for (int j = 0; j < scene[i].length; j++)
+                if (scene[i][j].thing instanceof BeamCrossing)
+                    return true;
+        return false;
     }
 
     private int tileCol(float x) {
