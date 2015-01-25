@@ -1,5 +1,9 @@
 package sneer.game.sokabota.core;
 
+import static sneer.gameengine.grid.Direction.UP;
+import static sneer.gameengine.grid.Direction.DOWN;
+import static sneer.gameengine.grid.Direction.LEFT;
+import static sneer.gameengine.grid.Direction.RIGHT;
 import sneer.gameengine.grid.Direction;
 import sneer.gameengine.grid.Thing;
 
@@ -24,7 +28,11 @@ public class Gun extends Thing {
 
 	@Override
 	public String toString() {
-		return ">";
+		if (direction == UP   ) return "A";
+		if (direction == DOWN ) return "V";
+		if (direction == LEFT ) return "<";
+		if (direction == RIGHT) return ">";
+		throw new IllegalStateException();
 	}
 
 	void fireIfOn() {
