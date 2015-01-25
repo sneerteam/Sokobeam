@@ -20,6 +20,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 
 import sneer.game.sokabota.core.BeamCrossing;
 import sneer.game.sokabota.core.Box;
@@ -46,6 +47,8 @@ public class SokabotaApp extends ApplicationAdapter {
     private TiledMapTileLayer gameLayer;
     private TiledMapTileLayer vbeamLayer;
     private TiledMapTileLayer hbeamLayer;
+    private Sound laserSound;
+    private Sound boxExplosionSound;
 
     public SokabotaApp(Sokabota game) {
         this.game = game;
@@ -77,24 +80,38 @@ public class SokabotaApp extends ApplicationAdapter {
 
         renderer = new OrthogonalTiledMapRenderer(map, 1 / 16f);
 
-        final Sound laserSound = newSound("data/Laser.wav");
+        laserSound = newSound("data/Laser.wav");
+        boxExplosionSound = newSound("data/box_exploding.wav");
 
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
             @Override
             public boolean tap(float x, float y, int count, int button) {
 
+                int numberOfBoxesBefore = numberOfBoxes();
                 int gunsFiringBefore = numberOfGunsFiring();
 
                 game.tap(1, tileRow(y), tileCol(x));
 
-                if (numberOfGunsFiring() > gunsFiringBefore)
-                    laserSound.play();
+                triggerBoxExplosions(numberOfBoxesBefore);
+                triggerLaserSound(gunsFiringBefore);
 
                 updateGame();
 
                 return false;
             }
         }));
+    }
+
+    private void triggerLaserSound(int gunsFiringBefore) {
+        if (numberOfGunsFiring() > gunsFiringBefore)
+            laserSound.play();
+    }
+
+    private void triggerBoxExplosions(int numberOfBoxesBefore) {
+        for (int i = 0; i < numberOfBoxesBefore - numberOfBoxes(); ++i)
+            Timer.schedule(new Timer.Task() { @Override public void run() {
+                boxExplosionSound.play();
+            }}, i * .1f);
     }
 
     private int numberOfGunsFiring() {
@@ -110,6 +127,19 @@ public class SokabotaApp extends ApplicationAdapter {
         for (int i = 0; i < scene.length; i++)
             for (int j = 0; j < scene[i].length; j++)
                 if (isGunFiring(scene[i][j].thing))
+                    total++;
+        return total;
+    }
+
+    private int numberOfBoxes() {
+        return numberOfBoxes(game.scene);
+    }
+
+    private int numberOfBoxes(Square[][] scene) {
+        int total = 0;
+        for (int i = 0; i < scene.length; i++)
+            for (int j = 0; j < scene[i].length; j++)
+                if (scene[i][j].thing instanceof Box)
                     total++;
         return total;
     }
