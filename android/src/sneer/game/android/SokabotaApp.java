@@ -31,6 +31,7 @@ import sneer.gameengine.grid.Square;
 import sneer.gameengine.grid.Thing;
 
 import static com.badlogic.gdx.math.MathUtils.floor;
+import static com.badlogic.gdx.math.MathUtils.round;
 
 public class SokabotaApp extends ApplicationAdapter {
     private final Sokabota game;
@@ -137,8 +138,8 @@ public class SokabotaApp extends ApplicationAdapter {
     static class Tiles {
         final TileLoader tiles = new TileLoader();
         final TiledMapTileLayer.Cell exitDoor = tiles.cell(0);
-        final TiledMapTileLayer.Cell beamH = tiles.cell(2);
-        final TiledMapTileLayer.Cell beamV = tiles.cell(3);
+        final TiledMapTileLayer.Cell beamH = beamH();
+        final TiledMapTileLayer.Cell beamV = beamV();
         final TiledMapTileLayer.Cell bg = tiles.cell(12);
         final TiledMapTileLayer.Cell wall = tiles.cell(24);
         final TiledMapTileLayer.Cell mirrorLeft = tiles.cell(16);
@@ -196,9 +197,22 @@ public class SokabotaApp extends ApplicationAdapter {
                     ? mirrorLeft
                     : mirrorRight;
         }
+
+
+        private TiledMapTileLayer.Cell beamH() {
+            boolean vertical = false;
+            return tiles.textureAnimation(tiles.beamH, vertical, 4);
+        }
+
+        private TiledMapTileLayer.Cell beamV() {
+            boolean vertical = true;
+            return tiles.textureAnimation(tiles.beamV, vertical, 4);
+        }
     }
 
     static class TileLoader {
+        public final Texture beamH;
+        public final Texture beamV;
         private TextureRegion[] tiles;
 
         TileLoader() {
@@ -206,18 +220,45 @@ public class SokabotaApp extends ApplicationAdapter {
             TextureRegion[][] splitTiles = TextureRegion.split(texture, 16, 16);
             if (splitTiles.length != 1) throw new AssertionError();
             tiles = splitTiles[0];
+            beamH = textureWithRepeat("beam-h.png");
+            beamV = textureWithRepeat("beam-v.png");
+        }
+
+        private Texture textureWithRepeat(String path) {
+            Texture t = new Texture(Gdx.files.internal(path));
+            t.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+            return t;
         }
 
         public TiledMapTileLayer.Cell cell(int col) {
-            return staticFor(tiles[col]);
+            return staticFor(texture(col));
+        }
+
+        private TextureRegion texture(int col) {
+            return tiles[col];
         }
 
         public TiledMapTileLayer.Cell animated(float period, int... cols) {
             return cellForTile(animatedTile(period, cols));
         }
 
+        public TiledMapTileLayer.Cell animated(float period, TextureRegion... frames) {
+            return cellForTile(new AnimatedTiledMapTile(period, staticTiles(frames)));
+        }
+
         public AnimatedTiledMapTile animatedTile(float period, int... cols) {
             return new AnimatedTiledMapTile(period, staticTiles(cols));
+        }
+
+        public TiledMapTileLayer.Cell textureAnimation(Texture t, boolean vertical, int frames) {
+            int delta = round((vertical ? t.getHeight() : t.getWidth()) / (float)frames);
+            TextureRegion[] ts = new TextureRegion[frames];
+            for (int i = 0; i < frames; i++) {
+                ts[i] = vertical
+                        ? new TextureRegion(t, 0, delta * i, t.getWidth(), t.getHeight())
+                        : new TextureRegion(t, delta * i, 0, t.getWidth(), t.getHeight());
+            }
+            return animated(1.0f / frames, ts);
         }
 
         private Array<StaticTiledMapTile> staticTiles(int[] cols) {
@@ -228,13 +269,20 @@ public class SokabotaApp extends ApplicationAdapter {
             return array;
         }
 
+        private Array<StaticTiledMapTile> staticTiles(TextureRegion[] textures) {
+            Array<StaticTiledMapTile> array = new Array<>(textures.length);
+            for (int i = 0; i < textures.length; i++) {
+                array.add(staticTileFor(textures[i]));
+            }
+            return array;
+        }
+
         private StaticTiledMapTile staticTile(int col) {
-            return staticTileFor(tiles[col]);
+            return staticTileFor(texture(col));
         }
 
         private TiledMapTileLayer.Cell staticFor(TextureRegion bgTexture) {
-            StaticTiledMapTile tile = staticTileFor(bgTexture);
-            return cellForTile(tile);
+            return cellForTile(staticTileFor(bgTexture));
         }
 
         private TiledMapTileLayer.Cell cellForTile(TiledMapTile tile) {
