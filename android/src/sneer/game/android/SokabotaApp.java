@@ -132,14 +132,17 @@ public class SokabotaApp extends ApplicationAdapter {
     }
 
     private TiledMapTileLayer backgroundLayer() {
-        TiledMapTileLayer bgLayer = newTiledMapLayer();
-        bgLayer.setOpacity(1);
-        for (int x = 0; x < cols(); ++x) {
-            for (int y = 0; y < rows(); ++y) {
+        TiledMapTileLayer bgLayer = newOpaqueTiledMapLayer();
+        for (int x = 0; x < cols(); ++x)
+            for (int y = 0; y < rows(); ++y)
                 bgLayer.setCell(x, y, tiles.bg);
-            }
-        }
         return bgLayer;
+    }
+
+    private TiledMapTileLayer newOpaqueTiledMapLayer() {
+        TiledMapTileLayer layer = newTiledMapLayer();
+        layer.setOpacity(1);
+        return layer;
     }
 
     private TiledMapTileLayer newTiledMapLayer() {
