@@ -122,4 +122,23 @@ public class AndroidLauncher extends AndroidApplication {
                 "                           ",
                 "    / Y                    ",
                 "                           "
+
+            Coop fase test
+
+                "              Y            ",
+                "                           ",
+                "                           ",
+                "Y                          ",
+                " bbbbbbbb<                 ",
+                "bbbbbbbbbb                 ",
+                "                           ",
+                "                           ",
+                "    bbb bb  WWWWWWWWWWWWWWb",
+                "bbbbbbbYbbb WWWWWWWWWWWWWbb",
+                "bbb      bbbbbb  b   2     ",
+                "        bbbbbbbb  b        ",
+                "bbbb  bbbb bbbbbb /bb      ",
+                " /  1   bb  bWWWWW b       ",
+                "        bb  bW! bb         "
+
       */
