@@ -52,10 +52,10 @@ public class SokabotaTest extends Assert {
 				"*  2");
 		
 		tap(1,	"1   ",
-				"*--+");
+				"*--@");
 		
 		scene(  "1   ",
-				">  +");
+				">  @");
 		
 	}
 

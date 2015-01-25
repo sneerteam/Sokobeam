@@ -18,7 +18,7 @@ public class Player extends Thing {
 
 	@Override
 	public String toString() {
-		return isDead ? "+" : "" + number;
+		return isDead ? "@" : "" + number;
 	}
 
 	public void tap(Square dest) {
