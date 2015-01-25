@@ -44,6 +44,8 @@ public class SokabotaApp extends ApplicationAdapter {
     private BitmapFont font;
     private SpriteBatch batch;
     private TiledMapTileLayer gameLayer;
+    private TiledMapTileLayer vbeamLayer;
+    private TiledMapTileLayer hbeamLayer;
 
     public SokabotaApp(Sokabota game) {
         this.game = game;
@@ -64,6 +66,10 @@ public class SokabotaApp extends ApplicationAdapter {
             map = new TiledMap();
             MapLayers layers = map.getLayers();
             layers.add(backgroundLayer());
+            vbeamLayer = newTiledMapLayer();
+            layers.add(vbeamLayer);
+            hbeamLayer = newTiledMapLayer();
+            layers.add(hbeamLayer);
             gameLayer = newTiledMapLayer();
             updateGame();
             layers.add(gameLayer);
@@ -122,13 +128,44 @@ public class SokabotaApp extends ApplicationAdapter {
 
     private void updateGame() {
         Square[][] scene = game.scene;
+        updateCells(scene);
+    }
+
+    private void updateCells(Square[][] scene) {
         for (int x = 0; x < cols(); ++x) {
             for (int y = 0; y < rows(); ++y) {
                 Thing t = scene[y][x].thing;
-                TiledMapTileLayer.Cell cell = tiles.forThing(t);
-                gameLayer.setCell(x, rows() - y - 1, cell);
+                int row = rows() - y - 1;
+                updateGameCell(x, row, t);
+                updateBeamCell(x, row, t);
             }
         }
+    }
+
+    private void updateGameCell(int col, int row, Thing t) {
+        TiledMapTileLayer.Cell cell = tiles.forThing(t);
+        gameLayer.setCell(col, row, cell);
+    }
+
+    private void updateBeamCell(int col, int row, Thing t) {
+        vbeamLayer.setCell(col, row, verticalBeamCellFor(t));
+        hbeamLayer.setCell(col, row, horizontalBeamCellFor(t));
+    }
+
+    private TiledMapTileLayer.Cell horizontalBeamCellFor(Thing t) {
+        if (t instanceof BeamCrossing) {
+            BeamCrossing b = (BeamCrossing)t;
+            return b.hasHorizontalBeam ? tiles.beamH : null;
+        }
+        return null;
+    }
+
+    private TiledMapTileLayer.Cell verticalBeamCellFor(Thing t) {
+        if (t instanceof BeamCrossing) {
+            BeamCrossing b = (BeamCrossing)t;
+            return b.hasVerticalBeam ? tiles.beamV : null;
+        }
+        return null;
     }
 
     private TiledMapTileLayer backgroundLayer() {
@@ -216,21 +253,14 @@ public class SokabotaApp extends ApplicationAdapter {
                 return forMirror((Mirror)t);
             if (t instanceof ExitDoor)
                 return exitDoor;
-            if (t instanceof BeamCrossing)
-                return forSegment((BeamCrossing) t);
             if (t instanceof Box)
                 return box;
             return null;
         }
 
-        private TiledMapTileLayer.Cell forSegment(BeamCrossing segment) {
-            return segment.hasVerticalBeam ? beamV : beamH;
-        }
-
         private TiledMapTileLayer.Cell forMirror(Mirror mirror) {
             return mirror.orientation.equals("/") ? mirrorRight : mirrorLeft;
         }
-
 
         private TiledMapTileLayer.Cell beamH() {
             boolean vertical = false;
