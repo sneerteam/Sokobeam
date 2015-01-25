@@ -1,6 +1,7 @@
 package sneer.game.sokabota.core.test;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.game.sokabota.core.Sokabota;
@@ -72,23 +73,48 @@ public class SokabotaTest extends Assert {
 		
 	}
 
-	@Test
-	public void mirrorsReflectLaser() {
-		subject = new Sokabota(
-				"1  ",
-				"> /");
-		
-		tap(1,	"1  ",
-				"* /");
-		
-		tap(1,	"1 |",
-				"*-/");
+    @Test
+    public void mirrorsReflectLaser() {
+        subject = new Sokabota(
+                "1  ",
+                "> /");
 
-		scene(	"1  ",
-				"> /");
-	}
+        tap(1,	"1  ",
+                "* /");
 
-	@Test
+        tap(1,	"1 |",
+                "*-/");
+
+        scene(	"1  ",
+                "> /");
+    }
+
+    @Ignore
+    @Test
+    public void lasersCross() {
+        subject = new Sokabota(
+        		" / \\",
+                "1   ",
+                ">  /",
+                "b   ");
+
+        tap(1,	" / \\",
+        		"1   ",
+                "*  /",
+        		"b   ");
+
+        tap(1,	" /-\\",
+        		"1| |",
+                "*+-/",
+        		"b|  ");
+
+        scene(	" / \\",
+        		"1   ",
+                ">  /",
+        		"b   ");
+    }
+
+    @Test
 	public void victory() {
 		subject = new Sokabota(
 				"1!",
