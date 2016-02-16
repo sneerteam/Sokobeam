@@ -1,2 +1,2 @@
-# sokabota
+# Sokobeam
 GGJ
